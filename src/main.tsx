@@ -33,7 +33,7 @@ async function saveData(data: Data) { return new Promise<void>((resolve) => { co
 function App() {
   const [data, setData] = useState<Data | null>(null); const [page, setPage] = useState<Page>('home');
   const [sheet, setSheet] = useState<'expense'|'income'|'reserve'|'future'|'futureForm'|'debt'|'onboard'|null>(null); const [editing, setEditing] = useState<Transaction | null>(null); const [paying, setPaying] = useState<FuturePayment | null>(null);
-  useEffect(() => { loadData().then(setData); if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js'); }, []);
+  useEffect(() => { loadData().then(setData); if ('serviceWorker' in navigator) navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`); }, []);
   const commit = (next: Data) => { setData(next); saveData(next); };
   const calc = useMemo(() => {
     if (!data) return null; const month = monthKey(); const plan = data.plans.find((p) => p.month === month) || { month, plannedIncome: 0, plannedReserve: 0 };

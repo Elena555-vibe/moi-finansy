@@ -1,9 +1,9 @@
 {
   "name": "Мои финансы",
   "short_name": "Финансы",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#F6F7F1",
   "theme_color": "#14320F",
-  "icons": [{ "src": "/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
+  "icons": [{ "src": "./icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
 }

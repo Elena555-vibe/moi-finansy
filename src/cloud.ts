@@ -27,8 +27,8 @@ export const signIn = async (email: string, password: string) => {
   return { apiUrl, email: result.email, token: result.token } satisfies CloudSession;
 };
 export const pushState = async <T>(session: CloudSession, state: T) => request<{ version: number }>(session.apiUrl, '/state', {
-  method: 'PUT', headers: { Authorization: `Bearer ${session.token}` }, body: JSON.stringify({ state }),
+  method: 'PUT', headers: { 'X-Finance-Authorization': `Bearer ${session.token}` }, body: JSON.stringify({ state }),
 });
 export const pullState = async <T>(session: CloudSession) => request<{ state: T | null; updatedAt?: string }>(session.apiUrl, '/state', {
-  headers: { Authorization: `Bearer ${session.token}` },
+  headers: { 'X-Finance-Authorization': `Bearer ${session.token}` },
 });

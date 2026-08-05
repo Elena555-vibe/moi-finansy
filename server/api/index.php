@@ -8,7 +8,7 @@ $config = require $configFile;
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: ' . $config['allowed_origin']);
 header('Vary: Origin');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Finance-Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
@@ -17,7 +17,17 @@ function input(): array { $body = json_decode(file_get_contents('php://input'), 
 function b64url(string $value): string { return rtrim(strtr(base64_encode($value), '+/', '-_'), '='); }
 function token(array $claims, string $secret): string { $header = b64url(json_encode(['alg'=>'HS256','typ'=>'JWT'])); $payload = b64url(json_encode($claims)); $signature = b64url(hash_hmac('sha256', "$header.$payload", $secret, true)); return "$header.$payload.$signature"; }
 function claims(string $secret): array {
-  $auth = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+  // Apache/FastCGI can expose the Authorization header under different names.
+  // Keep this lookup centralized so authenticated sync works on Timeweb too.
+  $headers = function_exists('getallheaders') ? getallheaders() : [];
+  $auth = $_SERVER['HTTP_AUTHORIZATION']
+    ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
+    ?? $_SERVER['HTTP_X_FINANCE_AUTHORIZATION']
+    ?? $headers['Authorization']
+    ?? $headers['authorization']
+    ?? $headers['X-Finance-Authorization']
+    ?? $headers['x-finance-authorization']
+    ?? '';
   if (!preg_match('/^Bearer\s+(.+)$/', $auth, $matches)) respond(401, ['error'=>'Нужно войти в аккаунт.']);
   $parts = explode('.', $matches[1]);
   if (count($parts) !== 3) respond(401, ['error'=>'Недействительная сессия.']);

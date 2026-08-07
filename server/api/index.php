@@ -10,6 +10,7 @@ header('Access-Control-Allow-Origin: ' . $config['allowed_origin']);
 header('Vary: Origin');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Finance-Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS');
+header('Cache-Control: no-store, private');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 function respond(int $status, array $body): never { http_response_code($status); echo json_encode($body, JSON_UNESCAPED_UNICODE); exit; }
@@ -38,6 +39,7 @@ function claims(string $secret): array {
   return $payload;
 }
 function uuid(): string { return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', random_int(0,65535),random_int(0,65535),random_int(0,65535),random_int(16384,20479),random_int(32768,49151),random_int(0,65535),random_int(0,65535),random_int(0,65535)); }
+function registrationLimit(array $config): int { return max(1, min(20, (int)($config['max_users'] ?? 20))); }
 
 try { $db = new PDO($config['db_dsn'], $config['db_user'], $config['db_password'], [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); }
 catch (Throwable $error) { respond(503, ['error'=>'Хранилище временно недоступно.']); }
@@ -48,14 +50,37 @@ if ($basePath !== '' && str_starts_with($path, $basePath)) $path = substr($path,
 $path = '/' . trim($path, '/');
 if ($path === '/health') respond(200, ['ok'=>true]);
 
+if ($path === '/registration-status' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+  $limit = registrationLimit($config);
+  $used = (int)$db->query('SELECT COUNT(*) FROM finance_users')->fetchColumn();
+  respond(200, ['capacity'=>$limit, 'used'=>min($used, $limit), 'available'=>max(0, $limit - $used)]);
+}
+
 if ($path === '/register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!$config['allow_registration']) respond(403, ['error'=>'Регистрация закрыта.']);
-  if ((int)$db->query('SELECT COUNT(*) FROM finance_users')->fetchColumn() > 0) respond(403, ['error'=>'Личный аккаунт уже создан. Войдите с существующим e-mail.']);
   $body=input(); $email=mb_strtolower(trim((string)($body['email'] ?? ''))); $password=(string)($body['password'] ?? '');
   if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($password) < 12) respond(422, ['error'=>'Укажите корректный e-mail и пароль не короче 12 символов.']);
   $id=uuid();
-  try { $statement=$db->prepare('INSERT INTO finance_users (id,email,password_hash) VALUES (?,?,?)'); $statement->execute([$id,$email,password_hash($password,PASSWORD_DEFAULT)]); }
-  catch (PDOException $error) { respond(409, ['error'=>'Этот e-mail уже зарегистрирован.']); }
+  try {
+    $db->beginTransaction();
+    $slotStatement=$db->prepare('SELECT slot FROM finance_registration_slots WHERE user_id IS NULL AND slot <= ? ORDER BY slot LIMIT 1 FOR UPDATE');
+    $slotStatement->execute([registrationLimit($config)]);
+    $slot=$slotStatement->fetchColumn();
+    if ($slot === false) { $db->rollBack(); respond(403, ['error'=>'Достигнут лимит: доступно максимум 20 личных копий приложения.']); }
+    $statement=$db->prepare('INSERT INTO finance_users (id,email,password_hash) VALUES (?,?,?)');
+    $statement->execute([$id,$email,password_hash($password,PASSWORD_DEFAULT)]);
+    $assignSlot=$db->prepare('UPDATE finance_registration_slots SET user_id=? WHERE slot=? AND user_id IS NULL');
+    $assignSlot->execute([$id,$slot]);
+    if ($assignSlot->rowCount() !== 1) throw new RuntimeException('Не удалось зарезервировать место для аккаунта.');
+    $db->commit();
+  } catch (PDOException $error) {
+    if ($db->inTransaction()) $db->rollBack();
+    if ($error->getCode() === '23000') respond(409, ['error'=>'Этот e-mail уже зарегистрирован.']);
+    respond(503, ['error'=>'Регистрация временно недоступна. Попробуйте ещё раз.']);
+  } catch (Throwable $error) {
+    if ($db->inTransaction()) $db->rollBack();
+    respond(503, ['error'=>'Регистрация временно недоступна. Попробуйте ещё раз.']);
+  }
   respond(201, ['email'=>$email,'token'=>token(['sub'=>$id,'exp'=>time()+60*60*24*180],$config['jwt_secret'])]);
 }
 

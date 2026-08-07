@@ -1,4 +1,5 @@
 export type CloudSession = { apiUrl: string; email: string; token: string; lastSyncedAt?: string; dirty?: boolean };
+export type RegistrationStatus = { capacity: number; used: number; available: number };
 
 declare global {
   interface Window { __MOI_FINANSY_CONFIG__?: { apiUrl?: string } }
@@ -16,6 +17,7 @@ const request = async <T>(apiUrl: string, path: string, options: RequestInit = {
 };
 
 export const serverConfigured = () => Boolean(configuredUrl());
+export const getRegistrationStatus = () => request<RegistrationStatus>(configuredUrl(), '/registration-status');
 export const createAccount = async (email: string, password: string) => {
   const apiUrl = configuredUrl();
   const result = await request<{ token: string; email: string }>(apiUrl, '/register', { method: 'POST', body: JSON.stringify({ email, password }) });

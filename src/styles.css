@@ -26,8 +26,8 @@ nav {
 }
 .fab {
   left: calc(50% - 28px) !important;
-  /* The button overlaps the dock by 8 px, independently of the iPhone inset. */
-  bottom: calc(60px + env(safe-area-inset-bottom)) !important;
+  /* Keep the action button attached to the dock, not above the iPhone inset. */
+  bottom: 60px !important;
   transform: none !important;
   -webkit-transform: none !important;
   z-index: 30;
@@ -35,8 +35,8 @@ nav {
 nav {
   left: 16px !important;
   right: 16px !important;
-  /* No extra floating gap: the safe-area inset itself protects the home indicator. */
-  bottom: env(safe-area-inset-bottom) !important;
+  /* The dock sits at the physical lower edge on every tab. */
+  bottom: 0 !important;
   width: auto !important;
   max-width: 528px !important;
   margin-inline: auto !important;

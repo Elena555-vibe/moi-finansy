@@ -372,3 +372,40 @@ nav {
 .sheet {
   overflow-x: clip;
 }
+
+/* The visual date field is ours; the native iOS picker is an invisible tap layer. */
+.sheet .date-input {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 52px;
+  margin-top: 8px;
+  overflow: hidden;
+  border: 1px solid #E5E8DF;
+  border-radius: 24px;
+  background: #fff;
+  color: #12200E;
+  box-sizing: border-box;
+}
+
+.sheet .date-input > span {
+  pointer-events: none;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.sheet .date-input > input[type="date"] {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  inline-size: 100% !important;
+  block-size: 100% !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  opacity: 0;
+  cursor: pointer;
+}

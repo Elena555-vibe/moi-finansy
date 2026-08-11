@@ -333,3 +333,42 @@ nav {
   font-size: 16px;
   line-height: 20px;
 }
+
+/* The native iOS date picker must never expand beyond a bottom sheet. */
+.sheet > label,
+.sheet label {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.sheet input[type="date"] {
+  display: block !important;
+  inline-size: 100% !important;
+  width: 100% !important;
+  block-size: 52px !important;
+  height: 52px !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  box-sizing: border-box !important;
+  padding-inline: 18px !important;
+}
+
+/* Shared date field for every operation sheet: expense, income, savings and reminders. */
+.sheet .form-date {
+  display: block !important;
+  flex: none !important;
+  inline-size: 100% !important;
+  width: 100% !important;
+  max-inline-size: 100% !important;
+  min-inline-size: 0 !important;
+  block-size: 52px !important;
+  height: 52px !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* A native iOS control must never create horizontal scrolling outside the sheet. */
+.sheet {
+  overflow-x: clip;
+}

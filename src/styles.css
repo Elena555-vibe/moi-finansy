@@ -186,3 +186,74 @@ nav {
   backdrop-filter: blur(12px) saturate(1.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0, 0, 0, 0.14) !important;
 }
+
+/* Keep the category amount inside the month chart on narrow phones. */
+.chart-wrap {
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.legend {
+  min-width: 0;
+  align-items: center;
+}
+
+.legend > span {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.legend b {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* iOS date controls need explicit logical sizing to avoid intrinsic overflow. */
+.savings-management .full-date {
+  display: block !important;
+  inline-size: 100% !important;
+  width: 100% !important;
+  block-size: 52px !important;
+  height: 52px !important;
+  min-inline-size: 0 !important;
+  max-inline-size: 100% !important;
+  box-sizing: border-box !important;
+  padding-inline: 18px !important;
+}
+
+.savings-summary > p {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.savings-manage-action {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+/* Glossy glass: a layered highlight, translucent colour and an inner rim. */
+.primary,
+.secondary,
+.inline-add button,
+.fab {
+  border-color: rgba(255, 255, 255, 0.78) !important;
+  box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.72), inset 0 -2px 2px rgba(20, 50, 15, 0.18), 0 12px 24px rgba(20, 50, 15, 0.2) !important;
+}
+
+.primary {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.18) 20%, transparent 43%), radial-gradient(ellipse at 82% 112%, rgba(39, 101, 44, 0.42), transparent 60%), linear-gradient(145deg, rgba(190, 229, 156, 0.98), rgba(93, 164, 74, 0.94)) !important;
+}
+
+.secondary,
+.inline-add button {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.28) 21%, transparent 45%), radial-gradient(ellipse at 85% 112%, rgba(158, 199, 120, 0.36), transparent 62%), linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(217, 235, 194, 0.88)) !important;
+}
+
+.fab {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.08) 20%, transparent 43%), radial-gradient(ellipse at 82% 112%, rgba(82, 137, 62, 0.44), transparent 60%), linear-gradient(145deg, rgba(63, 105, 49, 0.98), rgba(13, 43, 13, 0.96)) !important;
+  box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.44), inset 0 -2px 2px rgba(0, 0, 0, 0.24), 0 14px 28px rgba(20, 50, 15, 0.3) !important;
+}

@@ -679,30 +679,30 @@ body::before {
   content: " расходов";
 }
 
-/* Decorative glass coins for the Savings background. They are intentionally
-   low-contrast and sit behind every interactive card. */
-.savings-page {
+/* Decorative glass coins sit inside the Savings cards: visible, but behind
+   their content and never interactive. */
+.savings-card {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
 }
 
-.savings-page::before,
-.savings-page::after {
+.savings-card::after {
   content: "₽";
   position: absolute;
   display: grid;
   place-items: center;
   border-radius: 50%;
   pointer-events: none;
-  z-index: -1;
-  color: rgba(49, 85, 37, 0.20);
-  font-size: 42px;
+  z-index: 0;
+  color: rgba(49, 85, 37, 0.26);
+  font-size: 48px;
   font-weight: 700;
   line-height: 1;
   border: 1px solid rgba(255, 255, 255, 0.85);
   background:
-    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.82) 0 6%, transparent 23%),
-    linear-gradient(145deg, rgba(221, 237, 203, 0.52), rgba(255, 255, 255, 0.18));
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.88) 0 6%, transparent 23%),
+    linear-gradient(145deg, rgba(221, 237, 203, 0.68), rgba(255, 255, 255, 0.28));
   box-shadow:
     inset 8px 8px 16px rgba(255, 255, 255, 0.50),
     inset -8px -8px 16px rgba(49, 85, 37, 0.08),
@@ -711,25 +711,24 @@ body::before {
   -webkit-backdrop-filter: blur(6px);
 }
 
-.savings-page::before {
-  width: 116px;
-  height: 116px;
-  right: -30px;
-  top: 104px;
+.savings-summary::after {
+  width: 126px;
+  height: 126px;
+  right: -18px;
+  top: -28px;
   transform: rotate(12deg);
 }
 
-.savings-page::after {
-  width: 84px;
-  height: 84px;
-  left: -20px;
-  bottom: 20px;
-  font-size: 30px;
+.debt-summary::after {
+  width: 96px;
+  height: 96px;
+  right: -16px;
+  bottom: -20px;
+  font-size: 34px;
   transform: rotate(-14deg);
 }
 
-.savings-page > header,
-.savings-page > .savings-card {
+.savings-card > * {
   position: relative;
   z-index: 1;
 }

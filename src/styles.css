@@ -480,13 +480,15 @@ body::before {
 }
 
 nav {
-  bottom: 0 !important;
-  transform: translateY(8px) !important;
-  -webkit-transform: translateY(8px) !important;
+  /* Keep the dock clear of the iPhone home indicator without consuming the
+     visual bottom edge of the screen. */
+  bottom: 12px !important;
+  transform: none !important;
+  -webkit-transform: none !important;
 }
 
 .fab {
-  bottom: max(48px, calc(env(safe-area-inset-bottom) + 20px)) !important;
+  bottom: max(60px, calc(env(safe-area-inset-bottom) + 32px)) !important;
 }
 
 .settings-subtitle {

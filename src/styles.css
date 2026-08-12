@@ -550,3 +550,61 @@ nav {
 .savings-card .savings-manage-action {
   margin-top: 24px;
 }
+
+.debt-sheet-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 24px 0 16px;
+}
+
+.debt-sheet-summary > span {
+  color: #667061;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.debt-sheet-summary > strong {
+  display: block;
+  color: #14320F;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.debt-sheet-summary > small {
+  display: block;
+  margin-top: 8px;
+  color: #667061;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* In an installed iOS PWA, 100dvh may end above the physical lower safe area.
+   Give the document canvas the same gradient at its real WebKit height so no
+   white browser canvas can appear below the fixed dock. */
+html {
+  min-height: 100%;
+  height: -webkit-fill-available !important;
+  background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%) !important;
+}
+
+body {
+  min-height: 100vh !important;
+  min-height: -webkit-fill-available !important;
+  height: auto !important;
+  background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%) !important;
+}
+
+#root {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  height: auto !important;
+}
+
+.app {
+  min-height: 100vh !important;
+  min-height: -webkit-fill-available !important;
+}

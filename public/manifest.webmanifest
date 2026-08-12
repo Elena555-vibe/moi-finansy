@@ -3,7 +3,7 @@
   "short_name": "Финансы",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#F1F5EC",
+  "background_color": "#FFFFFF",
   "theme_color": "#14320F",
   "icons": [{ "src": "./icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }]
 }

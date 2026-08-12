@@ -147,7 +147,6 @@ function App() {
     {page === 'operations' && <Operations data={data} onEdit={(t) => { setEditing(t); setSheet(t.type === 'income' ? 'income' : t.type === 'reserve' ? 'reserve' : t.type === 'savings_withdrawal' ? 'savings_withdrawal' : t.type === 'debt_received' ? 'debt_received' : t.type === 'debt_payment' ? 'debt_payment' : 'expense'); }} onDelete={removeTx} onFutureActions={(payment) => { setFutureActions(payment); setSheet('futureActions'); }} onDeleteFuture={removeFuture} />}
     {page === 'plan' && <PlanPage data={data} calc={calc} onSavings={() => setSheet('savings')} onDebt={() => setSheet('debt')} />}
     {page === 'settings' && <SettingsPage data={data} onSave={commit} onCloud={() => setSheet('cloud')} />}
-    <div className="dock-backdrop" aria-hidden="true" />
     <button className="fab" aria-label="Добавить операцию" onClick={() => setSheet('future')}> <CirclePlus size={28} /> </button>
     <nav>{([['home','Главная',Home],['operations','Операции',List],['plan','Копилка',PiggyBank],['settings','Настройки',Settings]] as const).map(([key,label,Icon]) => <button key={key} className={page===key?'active':''} onClick={() => setPage(key)}><Icon size={21}/><span>{label}</span></button>)}</nav>
     {sheet === 'future' && <ChoiceSheet onClose={() => setSheet(null)} onPick={(v) => setSheet(v)} />}

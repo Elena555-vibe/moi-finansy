@@ -6,12 +6,15 @@ html,
 body,
 #root {
   width: 100%;
-  height: 100%;
-  overflow: hidden !important;
+  min-height: 100%;
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
 }
 .app {
-  height: 100dvh !important;
-  min-height: 0 !important;
+  height: auto !important;
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
@@ -587,41 +590,63 @@ nav {
    Give the document canvas the same gradient at its real WebKit height so no
    white browser canvas can appear below the fixed dock. */
 html {
-  min-height: 100%;
-  height: -webkit-fill-available !important;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
   background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%) !important;
 }
 
 body {
-  min-height: 100vh !important;
-  min-height: -webkit-fill-available !important;
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
   height: auto !important;
   background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%) !important;
 }
 
 #root {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  height: auto !important;
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
 }
 
 .app {
-  min-height: 100vh !important;
-  min-height: -webkit-fill-available !important;
+  min-height: 100svh !important;
+  min-height: 100dvh !important;
 }
 
-/* A real fixed layer closes the standalone iOS safe-area below the dock.
-   It is deliberately independent from the document viewport calculation. */
-.dock-backdrop {
-  position: fixed;
-  inset: auto 0 0;
-  height: max(144px, calc(112px + env(safe-area-inset-bottom)));
-  z-index: 19;
-  pointer-events: none;
-  background: radial-gradient(ellipse at 50% 12%, rgba(221, 237, 203, 0.56), transparent 62%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%);
+/* Navigation must always be above every screen and any Safari paint layer. */
+nav {
+  z-index: 100 !important;
 }
 
-nav,
 .fab {
-  isolation: isolate;
+  z-index: 110 !important;
+}
+
+/* White page canvas: the physical iOS safe area and every application screen
+   now share one neutral surface. Elevation is carried by cards, not the page. */
+html,
+body,
+#root,
+.app,
+.onboard {
+  background: #FFFFFF !important;
+}
+
+body::before {
+  display: none !important;
+}
+
+.chart-wrap,
+.list,
+.settings-list,
+.reserve-card,
+.onboard-card,
+.savings-card,
+.empty {
+  background: #FFFFFF !important;
+  border-color: #E5E8DF !important;
+  box-shadow: 0 8px 24px rgba(31, 53, 25, 0.08) !important;
+}
+
+.sheet {
+  background: #FFFFFF !important;
 }

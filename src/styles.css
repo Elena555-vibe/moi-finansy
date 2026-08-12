@@ -451,8 +451,29 @@ html,
 body,
 #root,
 .app {
-  background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%) !important;
-  background-attachment: fixed !important;
+  background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%);
+}
+
+/* Safari may expose a separate safe-area canvas below a fixed dock. Keep a
+   fixed gradient layer there as well, rather than letting its default white
+   canvas show through. */
+body {
+  position: relative;
+  isolation: isolate;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 92%, rgba(221, 237, 203, 0.56), transparent 38%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 nav {
@@ -463,4 +484,69 @@ nav {
 
 .fab {
   bottom: max(48px, calc(env(safe-area-inset-bottom) + 20px)) !important;
+}
+
+.settings-subtitle {
+  margin: 24px 0 12px;
+  color: #667061;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.archived-list {
+  opacity: .76;
+}
+
+.settings-list .delete-category {
+  margin-left: 8px;
+  color: #9B3C35;
+}
+
+/* The Savings tab contains two equal financial facts: saved money and debt. */
+.savings-page {
+  display: grid;
+  gap: 16px;
+}
+
+.savings-page header {
+  margin-bottom: 8px;
+}
+
+.savings-card {
+  margin: 0;
+  padding: 24px;
+  border: 1px solid #E5E8DF;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 8px 24px rgba(31, 53, 25, .08);
+}
+
+.savings-card > p {
+  color: #14320F;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+}
+
+.savings-card > strong {
+  display: block;
+  margin: 16px 0 8px;
+  color: #14320F;
+  font-size: 34px;
+  line-height: 40px;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+
+.savings-card > small {
+  display: block;
+  min-height: 20px;
+  color: #667061;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.savings-card .savings-manage-action {
+  margin-top: 24px;
 }

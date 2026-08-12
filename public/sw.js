@@ -1,4 +1,4 @@
-const CACHE = 'moi-finansy-v5';
+const CACHE = 'moi-finansy-v6';
 // Relative paths keep the offline shell inside the GitHub Pages project URL.
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.png', './runtime-config.js'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting())));

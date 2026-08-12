@@ -535,6 +535,7 @@ nav {
   color: #14320F;
   font-size: 34px;
   line-height: 40px;
+  font-weight: 400;
   letter-spacing: -1px;
   font-variant-numeric: tabular-nums;
 }
@@ -607,4 +608,20 @@ body {
 .app {
   min-height: 100vh !important;
   min-height: -webkit-fill-available !important;
+}
+
+/* A real fixed layer closes the standalone iOS safe-area below the dock.
+   It is deliberately independent from the document viewport calculation. */
+.dock-backdrop {
+  position: fixed;
+  inset: auto 0 0;
+  height: max(144px, calc(112px + env(safe-area-inset-bottom)));
+  z-index: 19;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 12%, rgba(221, 237, 203, 0.56), transparent 62%), linear-gradient(180deg, #F6F7F1 0%, #F1F5EC 100%);
+}
+
+nav,
+.fab {
+  isolation: isolate;
 }

@@ -661,6 +661,19 @@ body::before {
   border-bottom: 0;
 }
 
+.operation-summary .hero-stats span {
+  color: #DDEDCB;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.operation-summary .hero-stats b {
+  color: #FFFFFF;
+  font-size: 26px;
+  line-height: 32px;
+  margin-top: 6px;
+}
+
 /* Clarifies that the settings list contains expense categories. */
 .cloud-card + h2::after {
   content: " расходов";

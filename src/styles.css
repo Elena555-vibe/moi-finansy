@@ -652,3 +652,16 @@ body::before {
 .sheet {
   background: #FFFFFF !important;
 }
+
+/* The income/expense summary intentionally mirrors the Home balance card. */
+.operation-summary {
+  display: block;
+  margin: 0 0 24px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+/* Clarifies that the settings list contains expense categories. */
+.cloud-card + h2::after {
+  content: " расходов";
+}

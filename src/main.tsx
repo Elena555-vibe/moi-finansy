@@ -7,7 +7,7 @@ import './styles.css';
 type TxType = 'expense' | 'income' | 'reserve' | 'savings_withdrawal' | 'debt_received' | 'debt_payment';
 type Transaction = { id: string; type: TxType; amount: number; date: string; categoryId?: string; sourceId?: string; comment?: string };
 type Category = { id: string; name: string; icon: string; archived?: boolean };
-type Source = { id: string; name: string; archived?: boolean };
+type Source = { id: string; name: string; icon?: string; archived?: boolean };
 type FuturePayment = { id: string; amount: number; date: string; categoryId: string; paid?: boolean };
 type LegacyDebt = { initialAmount: number; nextPaymentDate: string; nextPaymentAmount: number };
 type Savings = { targetAmount: number };
@@ -49,6 +49,13 @@ const categoryDefinitions = [
   ['other', 'Прочее', 'other', ['unexpected']],
 ] as const;
 const categoryIconMap = { housing: House, groceries: ShoppingCart, household: Package, food_delivery: Utensils, transport: Car, connectivity: Wifi, health: HeartPulse, beauty: Sparkles, clothes: Shirt, education: GraduationCap, entertainment: Clapperboard, subscriptions: Monitor, gifts: Gift, travel: Plane, other: MoreHorizontal, custom: Tag };
+const sourceDefinitions = [
+  ['salary', 'Зарплата', 'salary'], ['advance', 'Аванс', 'advance'], ['bonus', 'Премия', 'bonus'], ['overtime', 'Сверхурочные', 'overtime'],
+  ['freelance', 'Фриланс', 'freelance'], ['side_job', 'Подработка', 'side_job'], ['business', 'Бизнес', 'business'],
+  ['dividends', 'Дивиденды', 'dividends'], ['coupons', 'Купоны', 'coupons'], ['interest', 'Проценты', 'interest'], ['rent_income', 'Доход от аренды', 'rent_income'],
+  ['purchase_refund', 'Возврат покупки', 'purchase_refund'], ['debt_refund', 'Возврат долга', 'debt_refund'], ['insurance_compensation', 'Страховая компенсация', 'insurance_compensation'], ['cashback', 'Кэшбэк', 'cashback'],
+  ['gift_income', 'Подарок', 'gift_income'], ['transfer', 'Перевод', 'transfer'], ['benefit', 'Пособие', 'benefit'], ['pension', 'Пенсия', 'pension'], ['scholarship', 'Стипендия', 'scholarship'],
+] as const;
 const categoryAlias = (category: Category) => [category.id, category.name].map((value) => value.trim().toLowerCase());
 const normalizedCategories = (categories?: Category[]) => {
   const existing = categories || [];
@@ -62,10 +69,21 @@ const normalizedCategories = (categories?: Category[]) => {
   // but can later be archived safely when already referenced by history.
   return [...current, ...existing.filter((category) => !matched.has(category.id))];
 };
+const normalizedSources = (sources?: Source[]) => {
+  const existing = sources || [];
+  const matched = new Set<string>();
+  const current = sourceDefinitions.map(([id, name, icon]) => {
+    const aliases = id === 'freelance' ? ['self', 'Самозанятость'] : id === 'interest' ? ['Проценты по вкладу'] : [];
+    const matching = existing.find((source) => !matched.has(source.id) && (source.id === id || aliases.includes(source.id) || aliases.includes(source.name) || source.name === name));
+    if (matching) matched.add(matching.id);
+    return matching ? { ...matching, name, icon, archived: false } : { id, name, icon };
+  });
+  return [...current, ...existing.filter((source) => !matched.has(source.id)).map((source) => ({ ...source, icon: source.icon || 'custom' }))];
+};
 const defaultData = (): Data => ({
   onboarded: false, initialBalance: 0, initialBalanceDate: today(),
   categories: normalizedCategories(),
-  sources: [['salary','Зарплата'],['self','Самозанятость'],['interest','Проценты по вкладу'],['other','Прочее']].map(([id,name]) => ({ id,name })),
+  sources: normalizedSources(),
   transactions: [], future: [], savings: { targetAmount: 0 }, plans: []
 });
 
@@ -75,7 +93,7 @@ function normalizeData(raw?: Partial<Data>): Data {
     ...base,
     ...raw,
     categories: normalizedCategories(raw?.categories),
-    sources: raw?.sources || base.sources,
+    sources: normalizedSources(raw?.sources),
     transactions: raw?.transactions || [],
     future: raw?.future || [],
     plans: raw?.plans || [],
@@ -176,7 +194,7 @@ function SettingsPage({data,onSave,onCloud}:{data:Data;onSave:(d:Data)=>void;onC
   const activeCategories=data.categories.filter(c=>!c.archived);
   const archivedCategories=data.categories.filter(c=>c.archived);
   const addCategory=()=>{if(categoryName.trim()) {onSave({...data,categories:[...data.categories,{id:uid(),name:categoryName.trim(),icon:'custom'}]});setCategoryName('');}};
-  const addSource=()=>{if(sourceName.trim()) {onSave({...data,sources:[...data.sources,{id:uid(),name:sourceName.trim()}]});setSourceName('');}};
+  const addSource=()=>{if(sourceName.trim()) {onSave({...data,sources:[...data.sources,{id:uid(),name:sourceName.trim(),icon:'custom'}]});setSourceName('');}};
   const archiveCategory=(id:string)=>onSave({...data,categories:data.categories.map(x=>x.id===id?{...x,archived:true}:x)});
   const restoreCategory=(id:string)=>onSave({...data,categories:data.categories.map(x=>x.id===id?{...x,archived:false}:x)});
   const removeCategory=(category:Category)=>{

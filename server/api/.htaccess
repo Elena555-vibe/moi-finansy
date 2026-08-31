@@ -2,6 +2,11 @@
   Require all denied
 </FilesMatch>
 
+# The parent virtual host intentionally denies access by default.  Allow only
+# this API directory; every financial endpoint still requires its own bearer
+# authentication before returning personal data.
+Require all granted
+
 RewriteEngine On
 # Preserve the bearer token when PHP runs through Apache/FastCGI.
 RewriteCond %{HTTP:Authorization} .

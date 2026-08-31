@@ -732,3 +732,67 @@ body::before {
   position: relative;
   z-index: 1;
 }
+
+/* A reminder due today is also a direct, one-tap payment action. */
+.reminder {
+  display: block;
+  padding: 8px 10px 8px 14px;
+}
+
+.reminder-content {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  color: #315525;
+  background: transparent;
+  text-align: left;
+}
+
+.reminder-content span {
+  min-width: 0;
+}
+
+.reminder-content b,
+.reminder-content small {
+  display: block;
+}
+
+.reminder-content small {
+  margin-top: 2px;
+  color: #315525;
+  font-weight: 700;
+}
+
+.reminder-pay {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 18px;
+  color: #14320F;
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(225, 248, 190, 0.92), rgba(111, 174, 82, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 6px 14px rgba(49, 85, 37, 0.13);
+}
+
+.reminder-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.reminder-cancel {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(49, 85, 37, 0.20);
+  border-radius: 18px;
+  color: #315525;
+  background: rgba(255, 255, 255, 0.58);
+  font-size: 14px;
+  font-weight: 700;
+}

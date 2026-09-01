@@ -674,6 +674,26 @@ body::before {
   margin-top: 6px;
 }
 
+/* The operations screen always has one clear calendar period. The control is
+   intentionally a calm filter, not a second analytical dashboard. */
+.period-picker {
+  margin: 0 0 16px;
+}
+
+.period-picker > span {
+  display: block;
+  color: #667061;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.period-picker select {
+  margin-top: 8px;
+  background-color: #E6EAD9;
+  color: #14320F;
+  font-weight: 700;
+}
+
 /* Clarifies that the settings list contains expense categories. */
 .cloud-card + h2::after {
   content: " расходов";

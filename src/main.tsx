@@ -229,8 +229,8 @@ function Operations({data,month,onMonthChange,onEdit,onDelete,onFutureActions,on
 function PlanPage({calc,onCreateGoal,onManageGoal,onDebt}:{calc:any;onCreateGoal:()=>void;onManageGoal:(goal:SavingsGoal)=>void;onDebt:()=>void}) {
   const goals = calc.savingsGoals.filter((goal:SavingsGoal) => !goal.archived);
   return <section className="savings-page"><header><h1>Копилка</h1></header>
-    <section className="savings-card savings-total-card"><p>Всего в копилках</p><strong>{money(calc.reserve)}</strong><small>Целей: {goals.length}</small></section>
-    <button className="secondary savings-create-action" onClick={onCreateGoal}>Новая копилка <CirclePlus size={18}/></button>
+    <section className="savings-overview"><div><p>Всего в копилках</p><strong>{money(calc.reserve)}</strong><small>Целей: {goals.length}</small></div><button className="secondary savings-create-action" onClick={onCreateGoal}>Новая копилка <CirclePlus size={18}/></button></section>
+    <h2 className="savings-section-title">Мои копилки</h2>
     {goals.map((goal:SavingsGoal & {saved:number;remaining:number|null}) => <section className="savings-card savings-summary" key={goal.id}><p>{goal.name}</p><strong>{money(goal.saved)}</strong><small>{goal.targetAmount ? `До цели осталось: ${money(goal.remaining || 0)}` : 'Целевая сумма пока не задана'}</small><button className="secondary savings-manage-action" onClick={()=>onManageGoal(goal)}>Управлять <ChevronRight size={18}/></button></section>)}
     <section className="savings-card debt-summary"><p>Долговые обязательства</p><strong>{money(calc.debtOutstanding)}</strong><small>Возвращено: {money(calc.debtPaid)}</small><button className="secondary savings-manage-action" onClick={onDebt}>Управлять <ChevronRight size={18}/></button></section>
   </section>

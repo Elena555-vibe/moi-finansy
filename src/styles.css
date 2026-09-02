@@ -518,6 +518,44 @@ nav {
   margin-bottom: 8px;
 }
 
+.savings-overview {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid rgba(221, 237, 203, .92);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(221, 237, 203, .84), rgba(246, 247, 241, .76));
+  box-shadow: 0 8px 24px rgba(31, 53, 25, .06);
+}
+
+.savings-overview p {
+  color: #315525;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.savings-overview strong {
+  display: block;
+  margin: 8px 0 4px;
+  color: #14320F;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+
+.savings-overview small {
+  display: block;
+  color: #667061;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.savings-section-title {
+  margin: 8px 0 0;
+}
+
 .savings-card {
   margin: 0;
   padding: 24px;

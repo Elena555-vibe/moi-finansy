@@ -557,6 +557,34 @@ nav {
   margin-top: 24px;
 }
 
+.savings-create-action {
+  margin-top: 0;
+}
+
+.goal-sheet-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 24px 0 16px;
+}
+
+.goal-sheet-summary > span,
+.goal-sheet-summary > small {
+  color: #667061;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.goal-sheet-summary > strong {
+  display: block;
+  color: #14320F;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.8px;
+  font-variant-numeric: tabular-nums;
+}
+
 .debt-sheet-summary {
   display: flex;
   flex-direction: column;
